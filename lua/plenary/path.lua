@@ -44,6 +44,11 @@ path.root = (function()
   end
 end)()
 
+-- remove trailing slash from homedir if any
+if path.home:sub(-1) == path.sep then
+  path.home = path.home:sub(1,-2)
+end
+
 path.S_IF = S_IF
 
 local band = function(reg, value)
@@ -340,7 +345,7 @@ function Path:normalize(cwd)
   self:make_relative(cwd)
 
   -- Substitute home directory w/ "~"
-  self.filename = self.filename:gsub("^" .. path.home, "~" .. path.sep, 1)
+  self.filename = self.filename:gsub("^" .. path.home, "~", 1)
 
   return _normalize_path(self.filename, self._cwd)
 end
